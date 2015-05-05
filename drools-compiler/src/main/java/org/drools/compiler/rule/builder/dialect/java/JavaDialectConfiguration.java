@@ -44,7 +44,7 @@ public class JavaDialectConfiguration
     public static final int             ECLIPSE         = 0;
     public static final int             JANINO          = 1;
 
-    public static final String[]        LANGUAGE_LEVELS = new String[]{"1.5", "1.6", "1.7"};
+    public static final String[]        LANGUAGE_LEVELS = new String[]{"1.5", "1.6", "1.7", "1.8"};
 
     private String                      languageLevel;
 
@@ -158,8 +158,10 @@ public class JavaDialectConfiguration
                 level = "1.6";
             } else if ( version.startsWith( "1.7" ) ) {
                 level = "1.7";
+            } else if ( version.startsWith( "1.8" ) ) {
+                level = "1.8";
             } else {
-                level = "1.5";
+                level = "1.7";
             }
         }
 

@@ -35,6 +35,7 @@ public final class EclipseJavaCompilerSettings extends JavaCompilerSettings {
     public static final String CompilerOptions_VERSION_1_5 = "1.5"; //$NON-NLS-1$
     public static final String CompilerOptions_VERSION_1_6 = "1.6"; //$NON-NLS-1$
     public static final String CompilerOptions_VERSION_1_7 = "1.7"; //$NON-NLS-1$
+    public static final String CompilerOptions_VERSION_1_8 = "1.8"; //$NON-NLS-1$
 
     public static final String CompilerOptions_GENERATE = "generate";//$NON-NLS-1$
     public static final String CompilerOptions_DO_NOT_GENERATE = "do not generate"; //$NON-NLS-1$
@@ -53,6 +54,7 @@ public final class EclipseJavaCompilerSettings extends JavaCompilerSettings {
     public static final String CompilerOptions_OPTION_Encoding = "org.eclipse.jdt.core.encoding"; //$NON-NLS-1$
     public static final String CompilerOptions_OPTION_Source = "org.eclipse.jdt.core.compiler.source"; //$NON-NLS-1$
     public static final String CompilerOptions_OPTION_TargetPlatform = "org.eclipse.jdt.core.compiler.codegen.targetPlatform"; //$NON-NLS-1$
+    public static final String CompilerOptions_OPTION_Compliance = "org.eclipse.jdt.core.compiler.compliance"; //$NON-NLS-1$
     public static final String CompilerOptions_OPTION_ReportDeprecation = "org.eclipse.jdt.core.compiler.problem.deprecation"; //$NON-NLS-1$    
 
     final private Map defaultEclipseSettings = new HashMap();
@@ -86,6 +88,7 @@ public final class EclipseJavaCompilerSettings extends JavaCompilerSettings {
         put("1.5", CompilerOptions_VERSION_1_5);
         put("1.6", CompilerOptions_VERSION_1_6);
         put("1.7", CompilerOptions_VERSION_1_7);
+        put("1.8", CompilerOptions_VERSION_1_8);
     }};
     
     private String toNativeVersion( final String pVersion ) {
@@ -105,6 +108,7 @@ public final class EclipseJavaCompilerSettings extends JavaCompilerSettings {
         map.put(CompilerOptions_OPTION_ReportDeprecation, isDeprecations()?CompilerOptions_GENERATE:CompilerOptions_DO_NOT_GENERATE);
         map.put(CompilerOptions_OPTION_TargetPlatform, toNativeVersion(getTargetVersion()));
         map.put(CompilerOptions_OPTION_Source, toNativeVersion(getSourceVersion()));
+        map.put(CompilerOptions_OPTION_Compliance, toNativeVersion(getSourceVersion()));
         map.put(CompilerOptions_OPTION_Encoding, getSourceEncoding());
 
         return map;
