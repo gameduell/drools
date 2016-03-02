@@ -343,15 +343,26 @@ public class ClassFieldInspector {
             }
         } else if( ! void.class.isAssignableFrom( method.getReturnType() ) ) {
             Method existingMethod = getterMethods.get( fieldName );
+            boolean covariantResult = false;
             if ( existingMethod != null && !isOverride( existingMethod, method ) ) {
                 addResult( fieldName, new GetterOverloadWarning( classUnderInspection,
                                                                  this.getterMethods.get( fieldName ).getName(), this.fieldTypes.get( fieldName ),
                                                                  method.getName(), method.getReturnType() ) );
+
+                if( method.getReturnType().isAssignableFrom(existingMethod.getReturnType()) ){
+                    covariantResult = true;
+                    this.getterMethods.put( fieldName,
+                                       existingMethod );
+                    this.fieldTypes.put( fieldName,
+                                    existingMethod.getReturnType() );
+                }
             }
-            this.getterMethods.put( fieldName,
+            if( !covariantResult ){
+                this.getterMethods.put( fieldName,
                                     method );
-            this.fieldTypes.put( fieldName,
+                this.fieldTypes.put( fieldName,
                                  method.getReturnType() );
+            }
             this.fieldTypesField.put( fieldName,
                                       f );
         }

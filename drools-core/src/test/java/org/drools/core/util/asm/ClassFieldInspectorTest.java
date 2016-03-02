@@ -190,7 +190,13 @@ public class ClassFieldInspectorTest {
         assertEquals( 7,
                       methods.size() );
     }
-
+  
+    @Test
+    public void testOverridingMethodWithCovariantReturnType() throws Exception{
+      final ClassFieldInspector ext = new ClassFieldInspector( SuperCar.class );
+      final Class<?> engine = ext.getFieldTypes().get("engine");
+      assertEquals(SuperEngine.class, engine);
+    }
     static class NonGetter {
 
         public int foo() {
@@ -289,4 +295,33 @@ public class ClassFieldInspectorTest {
 
     }
 
+    static class Vehicle<T>{
+        private T engine;
+ 
+        public T getEngine(){
+            return engine;
+        }
+     }
+
+     static class Car extends Vehicle<NormalEngine>{
+         @Override
+         public NormalEngine getEngine() {
+             return new NormalEngine();
+         }
+     }
+ 
+     static class SuperCar extends Car {
+         @Override
+         public SuperEngine getEngine() {
+             return new SuperEngine();
+         }
+     }
+ 
+     static class NormalEngine {
+ 
+     }
+ 
+     static class SuperEngine extends NormalEngine {
+ 
+     }
 }
