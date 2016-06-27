@@ -956,6 +956,8 @@ public class DefaultAgenda
                             int fireLimit) throws ConsequenceException {
         boolean tryagain;
         int localFireCount = 0;
+        int localFireCountTracking = 0;
+        final int LOCAL_FIRE_TRACKER_MAX  = 100;
         try {
             do {
                 evaluateEagerList();
@@ -978,15 +980,25 @@ public class DefaultAgenda
                         localFireCount = item.getRuleExecutor().evaluateNetworkAndFire(this.workingMemory, filter,
                                                                                        fireCount, fireLimit);
                         if ( localFireCount == 0 ) {
+                            localFireCountTracking++;
                             // nothing matched
                             tryagain = true; // will force the next Activation of the agenda, without going to outer loop which checks halt
                             this.workingMemory.flushPropagations(); // There may actions to process, which create new rule matches
+                        }else {
+                            localFireCountTracking = 0;
                         }
                     }
 
                     if ( group.peek() == null || !((AgendaItem) group.peek()).getTerminalNode().isFireDirect() ) {
                         // make sure the "fireDirect" meta rules have all impacted first, before unstaging.
                         unstageActivations();
+                    }
+                    if ( localFireCount >= LOCAL_FIRE_TRACKER_MAX){
+                        tryagain = false;
+                        log.warn(String.format("@@@@@@@ Something happened, we tried %s of %s and still always got " +
+                                        "localFireCount to 0 for rules [%s], so we are giving up to avoid the drools " +
+                                        "endless loop bug[SAWS-939] @@@@@@@",
+                                localFireCountTracking, LOCAL_FIRE_TRACKER_MAX, item));
                     }
                 }
             } while ( tryagain );

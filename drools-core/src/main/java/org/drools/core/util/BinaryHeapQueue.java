@@ -185,6 +185,8 @@ public class BinaryHeapQueue
 
     Activation dequeue(final int index) {
         if ( index < 1 || index > this.size ) {
+            log.error(String.format("=== ITEM DOES NOT EXISTS, IS THIS A BUG? === [index=%s, size=%s, data=%s]",index,
+                    this.size, Arrays.toString(this.elements)));
             //throw new NoSuchElementException();
             return null;
         }

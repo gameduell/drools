@@ -23,9 +23,9 @@
   <properties>
     <surefire.forkCount>1</surefire.forkCount>
   </properties>
-
   <repositories>
     <!-- Bootstrap repository to locate the parent pom when the parent pom has not been build locally. -->
+  <!--
     <repository>
       <id>jboss-public-repository-group</id>
       <name>JBoss Public Repository Group</name>
@@ -40,8 +40,8 @@
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
+    -->
   </repositories>
-
   <scm>
     <connection>scm:git:git@github.com:droolsjbpm/drools.git</connection>
     <developerConnection>scm:git:git@github.com:droolsjbpm/drools.git</developerConnection>

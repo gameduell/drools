@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>drools-core</artifactId>
-  <version>6.3.0.Final.gdpatch</version>
+  <version>6.3.0.Final.gdpatch.2</version>
   <packaging>bundle</packaging><!-- bundle = jar + OSGi metadata -->
 
   <name>Drools :: Core</name>
@@ -18,7 +18,18 @@
   <properties>
     <surefire.forkCount>2</surefire.forkCount>
   </properties>
-
+  <distributionManagement>
+      <repository>
+        <id>internal</id>
+        <name>GD-Internal</name>
+      <url>http://archiva.office.gameduell.de/repository/internal/</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>GD-Snapshots</name>
+      <url>http://archiva.office.gameduell.de/repository/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>org.osgi</groupId>
