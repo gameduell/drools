@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>drools-core</artifactId>
-  <version>6.3.0.Final.gdpatch.2</version>
+  <version>6.3.0.Final.gdpatch.3</version>
   <packaging>bundle</packaging><!-- bundle = jar + OSGi metadata -->
 
   <name>Drools :: Core</name>
