@@ -22,12 +22,12 @@
       <repository>
         <id>internal</id>
         <name>GD-Internal</name>
-      <url>http://archiva.office.gameduell.de/repository/internal/</url>
+      <url>http://nexus.office.gameduell.de/repository/release/</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
       <name>GD-Snapshots</name>
-      <url>http://archiva.office.gameduell.de/repository/snapshots/</url>
+      <url>http://nexus.office.gameduell.de/repository/snapshot/</url>
     </snapshotRepository>
   </distributionManagement>
   <dependencies>
