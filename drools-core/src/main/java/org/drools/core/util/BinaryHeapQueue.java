@@ -174,12 +174,66 @@ public class BinaryHeapQueue
         }
 
         final Activation result = this.elements[1];
-        dequeue(result.getQueueIndex());
+        //
+        // trying to mitigate a drools loops, as for some reason the BinaryHeap is getting corrupted with an element
+        // holding a -1 as index.
+        //
+        // https://jira.gameduell.de/browse/SURE-83
+        // https://jira.gameduell.de/browse/SAWS-939
+        //
+
+        /*
+**************** LOGS , check the , data=[] node and you can see the top of the HEAP corrupted with a -1
+[#|2016-07-01T02:31:13.901+0000|SEVERE|glassfish 4.1|org.drools.core.util.BinaryHeapQueue|_ThreadID=71549;_ThreadName=pool-390102-thread-1;_TimeMillis=1467340273901;_LevelValue=1000;|
+   === dequeue === [index=-1, size=5, data=[null, [Activation rule=basic.enablePublish, act#=5, salience=100000, tuple=null, index=-1], [Activation rule=basic.publishResponse, act#=9, salience=-1000
+00, tuple=null, index=2], [Activation rule=serverTurnTimeout, act#=705, salience=0, tuple=null, index=3], null, null, null, null, null, null, null, null, null, null]]|#]
+
+ [#|2016-07-01T02:31:13.901+0000|SEVERE|glassfish 4.1|org.drools.core.util.BinaryHeapQueue|_ThreadID=71764;_ThreadName=pool-41-thread-201;_TimeMillis=1467340273901;_LevelValue=1000;|
+   === dequeue === [index=-1, size=3, data=[null, [Activation rule=turnbased.turnTimeout.0, act#=82, salience=0, tuple=null, index=-1], [Activation rule=basic.publishResponse, act#=9, salience=-100000, tuple=null, index=2], [Activation rule=serverTurnTimeout, act#=705, salience=0, tuple=null, index=3], null, null, null, null, null, null, null, null, null, null]]|#]
+****************
+        * */
+
+        if(result.getQueueIndex() <= -1){
+            log.warn("DROOLS Activation index is %s for %s", result.getQueueIndex(), result);
+        }
+
+        //Using 1 instead of the queueIndex
+        dequeue(1);
+        //dequeue(result.getQueueIndex());
 
         return result;
     }
 
     public Activation dequeue(Activation activation) {
+        //
+        // trying to mitigate a drools loops, as for some reason the BinaryHeap is getting corrupted with an element
+        // holding a -1 as index.
+        //
+        // https://jira.gameduell.de/browse/SURE-83
+        // https://jira.gameduell.de/browse/SAWS-939
+        //
+
+        /*
+**************** LOGS , check the , data=[] node and you can see the top of the HEAP corrupted with a -1
+[#|2016-07-01T02:31:13.901+0000|SEVERE|glassfish 4.1|org.drools.core.util.BinaryHeapQueue|_ThreadID=71549;_ThreadName=pool-390102-thread-1;_TimeMillis=1467340273901;_LevelValue=1000;|
+   === dequeue === [index=-1, size=5, data=[null, [Activation rule=basic.enablePublish, act#=5, salience=100000, tuple=null, index=-1], [Activation rule=basic.publishResponse, act#=9, salience=-1000
+00, tuple=null, index=2], [Activation rule=serverTurnTimeout, act#=705, salience=0, tuple=null, index=3], null, null, null, null, null, null, null, null, null, null]]|#]
+
+ [#|2016-07-01T02:31:13.901+0000|SEVERE|glassfish 4.1|org.drools.core.util.BinaryHeapQueue|_ThreadID=71764;_ThreadName=pool-41-thread-201;_TimeMillis=1467340273901;_LevelValue=1000;|
+   === dequeue === [index=-1, size=3, data=[null, [Activation rule=turnbased.turnTimeout.0, act#=82, salience=0, tuple=null, index=-1], [Activation rule=basic.publishResponse, act#=9, salience=-100000, tuple=null, index=2], [Activation rule=serverTurnTimeout, act#=705, salience=0, tuple=null, index=3], null, null, null, null, null, null, null, null, null, null]]|#]
+****************
+        * */
+        if(activation.getQueueIndex() == -1){
+            for (int i = 0; i < this.elements.length; i++) {
+                if(this.elements[i] != null && activation.equals(this.elements[i])){
+                    log.warn(String.format("Correcting DROOLS Activation index from %s to %s for %s", activation.getQueueIndex(),
+                            i, activation));
+                    activation.setQueueIndex(i);
+                    break;
+                }
+            }
+        }
+        //
         return dequeue(activation.getQueueIndex());
     }
 
